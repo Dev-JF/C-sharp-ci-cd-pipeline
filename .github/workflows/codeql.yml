@@ -77,19 +77,17 @@ jobs:
 
 
   
-    - name: Checkout repository
+      - name: Checkout code
       uses: actions/checkout@v2
 
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 5.x # adjust the version according to your needs
+        dotnet-version: '5.x' # or whatever version you want
 
-    - name: Restore dependencies
-      run: dotnet restore
-
-    - name: Build
-      run: dotnet build --no-restore
+    - name: Compile C# files
+      run: |
+        csc /out:output.exe main.cs
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
