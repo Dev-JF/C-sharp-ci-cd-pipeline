@@ -40,7 +40,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: ['cpp', 'csharp', 'javascript']
+        language: ['csharp']
         # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python', 'ruby', 'swift' ]
         # Use only 'java' to analyze code written in Java, Kotlin or both
         # Use only 'javascript' to analyze code written in JavaScript, TypeScript or both
@@ -74,9 +74,22 @@ jobs:
     #   If the Autobuild fails above, remove it and uncomment the following three lines.
     #   modify them (or add more) to build your code if your project, please refer to the EXAMPLE below for guidance.
 
-    - run: |
-         echo "Run, Build Application using script"
-         ./location_of_script_within_repo/buildscript.sh
+
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.x # adjust the version according to your needs
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --no-restore
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
